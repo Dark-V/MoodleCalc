@@ -152,6 +152,7 @@ async function main() {
 
 
         // Download file
+        console.log(JSON.stringify(json));
         DownloadFileByString(`moodle-${attemptid}.qz`, JSON.stringify(json));
         
         // create choose button

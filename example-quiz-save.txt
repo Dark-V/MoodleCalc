@@ -1,0 +1,7 @@
+{
+	"answers": [
+	{"qid":['qtext', ['answer1','answer2']]},
+	{},
+	{}
+	]
+}

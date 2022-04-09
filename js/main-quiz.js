@@ -1,13 +1,3 @@
-
-function quizDump() {
-    // TODO
-    // Get attemptid from url
-    // mod_quiz_get_attempt_summary?attemptid=... 
-    // load data
-    // sync data in json format
-    // zlib this
-}
-
 function makeid(length) {
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -111,52 +101,8 @@ function ParseQuestion(item) {
     }
 }
 
-function en(c){var x='charCodeAt',b,e={},f=c.split(""),d=[],a=f[0],g=256;for(b=1;b<f.length;b++)c=f[b],null!=e[a+c]?a+=c:(d.push(1<a.length?e[a]:a[x](0)),e[a+c]=g,g++,a=c);d.push(1<a.length?e[a]:a[x](0));for(b=0;b<d.length;b++)d[b]=String.fromCharCode(d[b]);return d.join("")}
-
-function de(b){var a,e={},d=b.split(""),c=f=d[0],g=[c],h=o=256;for(b=1;b<d.length;b++)a=d[b].charCodeAt(0),a=h>a?d[b]:e[a]?e[a]:f+c,g.push(a),c=a.charAt(0),e[o]=f+c,o++,f=a;return g.join("")}
-
-
-async function main() {
-
-    chrome.storage.sync.get(["wstoken"], async function(result) {
-
-        // Generate name for file & attemptid 
-        var url = new URL(window.location.href);
-
-        // create data
-        var wstoken = result["wstoken"];
-        var attemptid = url.searchParams.get('attempt');
-
-        var url = `https://lk.sakhgu.ru/webservice/rest/server.php?wstoken=${wstoken}&moodlewsrestformat=json&wsfunction=mod_quiz_get_attempt_summary&attemptid=${attemptid}`;
-        var body = await(await fetch(url)).json();
-
-        // Create json template
-        // set "timestamp" -> Math.floor(Date.now() / 1000)
-        // set "username"  -> document.getElementsByClassName('usertext')[0].textContent
-        // set "attemtid"  -> ${attemptid}
-        // set "answers"   -> []
-
-        var json = {
-            "timestamp": Math.floor(Date.now() / 1000),
-            "username": document.getElementsByClassName('usertext')[0].textContent, 
-            "attemtid": `${attemptid}`,
-            "answers": []
-        };
-        
-        // json.answers.push('test');
-
-        for (var i=0, max=body.questions.length; i < max; i++) {
-            question_data = ParseQuestion(body.questions[i]);
-            if (question_data != undefined) json.answers.push(question_data);
-        }
-
-
-        // Download file
-        console.log(JSON.stringify(json));
-        DownloadFileByString(`moodle-${attemptid}.qz`, JSON.stringify(json));
-        
-        // create choose button
-        var input = document.createElement("input");
+function CreateLoadButton() {
+    var input = document.createElement("input");
             input.type = "file";
             input.id = "load-quiz-data"
         document.getElementsByClassName("card-body p-3")[0].append(input)
@@ -171,6 +117,63 @@ async function main() {
             });
             reader.readAsText(file);
         });
+}
+
+async function GenerateQuizShare(attemptid, wstoken) {
+
+    // create data
+    var url = `https://lk.sakhgu.ru/webservice/rest/server.php?wstoken=${wstoken}&moodlewsrestformat=json&wsfunction=mod_quiz_get_attempt_summary&attemptid=${attemptid}`;
+    var body = await(await fetch(url)).json();
+
+    // Create json template
+    // set "timestamp" -> Math.floor(Date.now() / 1000)
+    // set "username"  -> document.getElementsByClassName('usertext')[0].textContent
+    // set "attemtid"  -> ${attemptid}
+    // set "answers"   -> []
+
+    var json = {
+        "timestamp": Math.floor(Date.now() / 1000),
+        "username": document.getElementsByClassName('usertext')[0].textContent, 
+        "attemtid": `${attemptid}`,
+        "answers": []
+    };
+
+    for (var i=0, max=body.questions.length; i < max; i++) {
+        question_data = ParseQuestion(body.questions[i]);
+        if (question_data != undefined) json.answers.push(question_data);
+    }
+
+        
+    // create json file
+    return JSON.stringify(json);  
+}
+
+async function test() {
+    var node = document.getElementById('quiz-share-button');
+    DownloadFileByString(node.title, node.getAttribute('json-data'));
+}
+
+async function main() {
+
+    chrome.storage.sync.get(["wstoken"], async function(result) {
+
+        var wstoken = result["wstoken"];
+        var url = new URL(window.location.href);
+        var attemptid = url.searchParams.get('attempt');
+        let data = await GenerateQuizShare(attemptid, wstoken);
+
+        // Create "Поделиться" button
+        var a = document.createElement("a");
+            a.id = "quiz-share-button";
+            a.innerText = "Поделиться";
+            a.title = `moodle-${attemptid}.qz`;
+            a.setAttribute('json-data', data);
+            a.onclick = test;
+            a.href = "#";
+        
+        // append this button
+        var target = document.getElementById('quiz-timer');
+        target.parentNode.insertBefore(a, target);
     });
 }
 

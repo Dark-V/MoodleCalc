@@ -40,6 +40,10 @@ function nthParent(element, n) {
   }
 
 async function loadSpoilerItems(this_, ModuleId) {
+
+    document.getElementById(`${ModuleId}-button-1`).onclick = button1;
+    document.getElementById(`${ModuleId}-button-1`).value = ModuleId;
+
     chrome.storage.sync.get(["wstoken"], async function(result) {
         var wstoken = result["wstoken"];
 
@@ -80,8 +84,9 @@ async function loadSpoilerItems(this_, ModuleId) {
 
             document.getElementById(`${ModuleId}-value-1`).innerHTML = `Попыток: ${amountAttemps}`;
             document.getElementById(`${ModuleId}-value-2`).innerHTML = `Кол-во вопросов: ${amountQusetions}`; 
+            document.getElementById(`${ModuleId}-value-2`).value = amountQusetions;
             document.getElementById(`${ModuleId}-value-3`).innerHTML = `Время: ${timelimit}`;
-            document.getElementById(`${ModuleId}-value-4`).innerHTML = `Пере-прохождение: ${retake}`; 
+            document.getElementById(`${ModuleId}-value-4`).innerHTML = `Повторный доступ: ${retake}`; 
         }
         else if (type == '') {
     
@@ -107,12 +112,12 @@ function SecretFunction() {
         <tbody>
         <tr style="height: 18px; white-space: nowrap; overflow: hidden;">
         <td style="width: 5%; height: 36px;" rowspan="2">
-            <button class="button1">Skip</button>
+            <button class="button1" id="${ModuleId}-button-1">Skip</button>
         </td>
         <td style="width: 5%; height: 36px;" rowspan="2">
-            <button class="button2">button2</button>
-        </td>
-        <td style="width: 12.5%;" rowspan="2"></td>
+            <button class="button2">Debug</button>
+        </td>   
+        <td style="width: 12.5%;" rowspan="2"></td> 
         <td style="width: 25%;" id="${ModuleId}-value-1">#: #</td>
         <td style="width: 25%;" id="${ModuleId}-value-2">#: #</td>
         </tr>
@@ -129,6 +134,12 @@ function SecretFunction() {
         loadSpoilerItems(this.parentNode.parentNode, ModuleId);
     }
    
+}
+
+function button1() {
+    var spoiler = document.getElementsByClassName(`spoiler-head-${this.value}`)[0];
+    var url = `${spoiler.getElementsByClassName('instancename')[0].href}&pageid=-9`;
+    window.open(url, '_blank').focus();
 }
 
 function AddSecretButton() {

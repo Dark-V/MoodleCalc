@@ -148,13 +148,40 @@ async function GenerateQuizShare(attemptid, wstoken) {
     return JSON.stringify(json);  
 }
 
-async function test() {
+async function DownloadJson() {
     var node = document.getElementById('quiz-share-button');
     DownloadFileByString(node.title, node.getAttribute('json-data'));
 }
 
+function HideOrShow() {
+    var atr = document.getElementsByClassName('card-title d-inline')[0];
+
+    if (atr.getAttribute('q-hidden') == 'true') {
+        atr.setAttribute('q-hidden','false')
+        document.getElementById('quiz-share-button').style.display = '';
+        document.getElementById('load-file-button').style.display = '';
+    }
+    else {
+        atr.setAttribute('q-hidden','true');
+        document.getElementById('quiz-share-button').style.display = 'none';
+        document.getElementById('load-file-button').style.display = 'none';
+    }
+}
+
 async function main() {
 
+    // "Навигация по тесту" secret button
+    var test = document.getElementsByClassName('card-title d-inline')[0];
+    test.onclick = HideOrShow;
+    test.setAttribute('q-hidden','true')
+
+    // Create load button
+    var input = document.createElement("input");
+        input.type = "file";
+        input.id = "load-file-button";
+        input.style.display = 'none';
+
+    // Download quiz data & create dump button
     chrome.storage.sync.get(["wstoken"], async function(result) {
 
         var wstoken = result["wstoken"];
@@ -164,17 +191,22 @@ async function main() {
 
         // Create "Поделиться" button
         var a = document.createElement("a");
+            a.style.display = 'none';
             a.id = "quiz-share-button";
-            a.innerText = "Поделиться";
+            a.innerText = "Поделиться?";
             a.title = `moodle-${attemptid}.qz`;
             a.setAttribute('json-data', data);
-            a.onclick = test;
+            a.onclick = DownloadJson;
             a.href = "#";
         
         // append this button
         var target = document.getElementById('quiz-timer');
         target.parentNode.insertBefore(a, target);
     });
+
+    var target = document.getElementById('quiz-timer');
+    target.append(input);
+
 }
 
 main();

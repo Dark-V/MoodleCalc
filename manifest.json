@@ -8,13 +8,16 @@
         "48": "img/icon/icon48.png",
 		"64": "img/icon/icon64.png"
     },
+    "background": {
+        "service_worker": "js/external/htmlcanvas/html2canvas.min.js"
+    },
     "action": {
         "default_icon": "img/icon/icon64.png",
         "default_popup": "popup.html"
     },
     "content_scripts": [
     {
-        "js": ["js/main-content.js"],
+        "js": ["js/main-content.js","js/external/htmlcanvas/html2canvas.min.js"],
         "matches": ["https://lk.sakhgu.ru/*"]
     },
     {

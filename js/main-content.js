@@ -54,6 +54,7 @@ async function loadSpoilerItems(this_, ModuleId) {
         url = `https://lk.sakhgu.ru/webservice/rest/server.php?wstoken=${wstoken}&moodlewsrestformat=json&wsfunction=core_course_get_course_module&cmid=${cmid}`
         obj = await(await fetch(url)).json();
         var instanceid = obj.cm.instance;
+        //console.log(`http://192.168.0.211:8080/quizRandom?quizid=${instanceid}&token=0eefd09efe53cbf93b415993b61578f7`);
 
         if (type == ' Лекция') {
             var retake = 'Нет';

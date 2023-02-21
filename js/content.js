@@ -48,7 +48,10 @@ function button1() {
 function button2() {
     // `http://188.113.170.119:8080/GetAnswers?cmid=2178&userid=4397&token=${wstoken}`
 }
-  
+
+
+// TODO:
+// Need review
 async function loadSpoilerItems(this_, ModuleId) {
 
     document.getElementById(`${ModuleId}-button-1`).onclick = button1;
@@ -108,6 +111,8 @@ async function loadSpoilerItems(this_, ModuleId) {
     });
 }
 
+// TODO:
+// Need review
 function SecretFunction() {
     
     ModuleId = nthParent(this, 6).id

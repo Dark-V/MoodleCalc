@@ -21,9 +21,8 @@
         "matches": ["https://lk.sakhgu.ru/*"]
     },
     {
-        "js": ["js/quiz.js"],
-		
-        "matches": ["https://lk.sakhgu.ru/mod/quiz/attempt.php*","https://lk.sakhgu.ru/mod/quiz/review.php*"]
+        "js": ["js/review.js"],
+        "matches": ["https://lk.sakhgu.ru/mod/quiz/review.php*"]
     },
     {
         "js": ["js/lesson.js"],

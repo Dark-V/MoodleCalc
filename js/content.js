@@ -37,12 +37,25 @@ function nthParent(element, n) {
     while(n-- && element)  
       element = element.parentNode;
     return element;
-  }
+}
 
+function button1() {
+    var spoiler = document.getElementsByClassName(`spoiler-head-${this.value}`)[0];
+    var url = `${spoiler.getElementsByClassName('instancename')[0].href}&pageid=-9`;
+    window.open(url, '_blank').focus();
+}
+
+function button2() {
+    // `http://188.113.170.119:8080/GetAnswers?cmid=2178&userid=4397&token=${wstoken}`
+}
+  
 async function loadSpoilerItems(this_, ModuleId) {
 
     document.getElementById(`${ModuleId}-button-1`).onclick = button1;
     document.getElementById(`${ModuleId}-button-1`).value = ModuleId;
+
+    document.getElementById(`${ModuleId}-button-2`).onclick = button2;
+    document.getElementById(`${ModuleId}-button-2`).value = ModuleId;
 
     chrome.storage.sync.get(["wstoken"], async function(result) {
         var wstoken = result["wstoken"];
@@ -54,7 +67,7 @@ async function loadSpoilerItems(this_, ModuleId) {
         url = `https://lk.sakhgu.ru/webservice/rest/server.php?wstoken=${wstoken}&moodlewsrestformat=json&wsfunction=core_course_get_course_module&cmid=${cmid}`
         obj = await(await fetch(url)).json();
         var instanceid = obj.cm.instance;
-        //console.log(`http://192.168.0.211:8080/quizRandom?quizid=${instanceid}&token=0eefd09efe53cbf93b415993b61578f7`);
+        console.log(`http://192.168.0.211:8080/quizRandom?quizid=${instanceid}&token=0eefd09efe53cbf93b415993b61578f7`);
 
         if (type == ' Лекция') {
             var retake = 'Нет';
@@ -116,7 +129,7 @@ function SecretFunction() {
             <button class="button1" id="${ModuleId}-button-1">Skip</button>
         </td>
         <td style="width: 5%; height: 36px;" rowspan="2">
-            <button class="button2">Debug</button>
+            <button class="button2" id="${ModuleId}-button-2">Debug</button>
         </td>   
         <td style="width: 12.5%;" rowspan="2"></td> 
         <td style="width: 25%;" id="${ModuleId}-value-1">#: #</td>
@@ -135,12 +148,6 @@ function SecretFunction() {
         loadSpoilerItems(this.parentNode.parentNode, ModuleId);
     }
    
-}
-
-function button1() {
-    var spoiler = document.getElementsByClassName(`spoiler-head-${this.value}`)[0];
-    var url = `${spoiler.getElementsByClassName('instancename')[0].href}&pageid=-9`;
-    window.open(url, '_blank').focus();
 }
 
 function AddSecretButton() {

@@ -21,12 +21,18 @@ function DownloadFileByString(filename, content) {
 
 function ParseQuestion(item) {
     var parser = new DOMParser();
-    if (item.status == "Ответ сохранен") {
+    // console.log(item);
+    if (item.status == "Ответ сохранен" || item.status == "Выполнен") {
         var html = parser.parseFromString(item.html, 'text/html');
         
+        var correctAnsw = false;
         var qid = "";
         var qtext = "";
         var answers = [];
+
+        if (parseFloat(item.mark) > 0,7) {
+            correctAnsw = true;
+        }
 
         if (item.type == "multichoice") {
             qid = html.getElementsByClassName('questionflagpostdata')[0].value.split('qid=')[1].split('&slot')[0]
@@ -76,6 +82,9 @@ function ParseQuestion(item) {
                 answers.push(RawAnswers[i].textContent);
             }
         }
+		
+		// TODO: need FIX
+		// don't have correct order due answer randomize for user 		   													
         else if (item.type == "ordering") {
             qid = html.getElementsByClassName('questionflagpostdata')[0].value.split('qid=')[1].split('&slot')[0]
             qtext = html.getElementsByClassName('qtext')[0].textContent;
@@ -95,6 +104,7 @@ function ParseQuestion(item) {
              "qid": qid,
              "qtype": item.type,
              "qtext": qtext,
+             "isCorrect": correctAnsw,
              "answers": answers
         };
         return question_data;
@@ -122,7 +132,11 @@ function CreateLoadButton() {
 async function GenerateQuizShare(attemptid, wstoken) {
 
     // create data
-    var url = `https://lk.sakhgu.ru/webservice/rest/server.php?wstoken=${wstoken}&moodlewsrestformat=json&wsfunction=mod_quiz_get_attempt_summary&attemptid=${attemptid}`;
+    // standad -> mod_quiz_get_attempt_summary
+    // review -> mod_quiz_get_attempt_review
+    var wsfunction = "mod_quiz_get_attempt_review";
+    var url = `https://lk.sakhgu.ru/webservice/rest/server.php?wstoken=${wstoken}&moodlewsrestformat=json&wsfunction=${wsfunction}&attemptid=${attemptid}`;
+    console.log(url);
     var body = await(await fetch(url)).json();
 
     // Create json template
@@ -200,11 +214,11 @@ async function main() {
             a.href = "#";
         
         // append this button
-        var target = document.getElementById('quiz-timer');
+        var target = document.getElementsByClassName('othernav')[0]; // document.getElementById('secureclosebutton')
         target.parentNode.insertBefore(a, target);
     });
 
-    var target = document.getElementById('quiz-timer');
+    var target = document.getElementsByClassName('othernav')[0]; // document.getElementById('secureclosebutton')
     target.append(input);
 
 }

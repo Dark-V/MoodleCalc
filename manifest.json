@@ -25,6 +25,10 @@
         "matches": ["https://lk.sakhgu.ru/mod/quiz/review.php*"]
     },
     {
+        "js": ["js/attempt.js"],
+        "matches": ["https://lk.sakhgu.ru/mod/quiz/attempt.php*"]
+    },
+    {
         "js": ["js/lesson.js"],
         "matches": ["https://lk.sakhgu.ru/mod/lesson/*"]
     }],

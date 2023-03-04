@@ -46,6 +46,9 @@ function button1() {
 }
 
 function button2() {
+    var spoiler = document.getElementsByClassName(`spoiler-head-${this.value}`)[0];
+    var url = `${spoiler.getElementsByClassName('instancename')[0].href}&pageid=-9`;
+    window.open(url, '_blank').focus();
     // `http://188.113.170.119:8080/GetAnswers?cmid=2178&userid=4397&token=${wstoken}`
 }
 

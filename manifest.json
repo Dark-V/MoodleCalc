@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "ModuleCalc",
     "description": "Made by 'schemchiki' community",
-    "version": "1.7",
+    "version": "2.0",
     "icons": {
         "16": "img/icon/icon16.png",
         "48": "img/icon/icon48.png",

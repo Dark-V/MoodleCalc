@@ -64,7 +64,7 @@ async function loadSpoilerItems(this_, ModuleId) {
     document.getElementById(`${ModuleId}-button-2`).value = ModuleId;
 
     chrome.storage.sync.get(["wstoken"], async function(result) {
-        var wstoken = result["wstoken"];
+        const wstoken = result["wstoken"];
 
         var type = this_.getElementsByClassName('accesshide ')[0].textContent;
         var url = new URL(this_.getElementsByClassName('instancename')[0].href);

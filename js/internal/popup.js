@@ -1,50 +1,80 @@
-async function login_button() {
-  if (document.getElementById("token") != 'Выйти') {
-    var login = document.getElementById("username").value;
-    var pass = document.getElementById("password").value;
-    
-    document.getElementById("loading-img").style = "display:inline-block";
+async function login(username, password) {
+  var username = document.getElementById("username").value;
+  var password = document.getElementById("password").value;
 
-    var url = `https://lk.sakhgu.ru/login/token.php?username=${login}&password=${pass}&service=moodle_mobile_app`;
-    var data = await(await fetch(url)).json();
+  var url = `https://lk.sakhgu.ru/login/token.php?username=${username}&password=${password}&service=moodle_mobile_app`;
+  var data = await(await fetch(url)).json();
 
-    var return_ = 'Invaid username or password';
-    if (!data.error) {
-      chrome.storage.sync.set({"wstoken" : data.token}, function() {
-        console.log(`Value is set to ${data.token}`);
-      });
+  console.log(data);
 
-      // Token save in Chrome Sync https://developer.chrome.com/docs/extensions/reference/storage/
-      return_ = `Your token: ${data.token.slice(0, 7)}...${data.token.slice(16, 32)}`; // Your token: 7e1025f...7020dab4b0c4de23
-      document.getElementById("token").innerHTML = 'Выйти';
-    }
+  if (data.error)  { 
+    document.getElementById('login-data').textContent = data.error;
 
-    document.getElementById("loading-img").style = "display:none";
-    document.getElementById("func_return").innerHTML = return_;
+    return false
   }
-  else {
-    chrome.storage.sync.set({"wstoken" : ''}, function() {
-      console.log(`Value is set to NULL`);
-      document.getElementById("token").innerHTML = 'Войти';
-    });
-  }
+  // Update token data in chrome storage
+  chrome.storage.sync.set({"wstoken" : data.token}, function() {
+    console.log(`Value is set to ${data.token}`);
+  });
+
+  Hide();
+
+  // clear login data result
+  document.getElementById('login-data').textContent = "";
+
+  return true
 }
 
-function StartListener() {
+async function Hide() {
+    // Disable input
+    document.getElementById('username').disabled = true;
+    document.getElementById('password').disabled = true;
+  
+    // change text and color of login button
+    document.querySelector('.login-button').classList.add('denied-button');
+    document.getElementById('login-button').textContent = 'Exit';
+}
+
+async function Show() {
+  // change text and color of login button
+  document.querySelector('.login-button').classList.remove('denied-button');
+  document.getElementById('login-button').textContent = 'Login';
+
+  // Enable input
+  document.getElementById('username').disabled = false; 
+  document.getElementById('password').disabled = false;
+}
+
+async function unlogin() {
+  console.log('Unlogging');
+  Show();
+  chrome.storage.sync.set({"wstoken" : ""}, function() {});
+}
+
+async function login_button() {
+  chrome.storage.sync.get(["wstoken"], async function(r) {
+    if (r["wstoken"] != "") unlogin()
+    else login();
+  });
+}
+
+function Main() {
   document.addEventListener('DOMContentLoaded', () => {
+
+    chrome.storage.sync.get(["wstoken"], async function(r) {
+      if (r["wstoken"] != "") Hide()
+      else Show();
+    });
+
     var settingsButton = document.getElementById('setting_btn');
     settingsButton.addEventListener('click', () => {
       chrome.tabs.create({
       url: 'html/settings.html'
     })});
   
-    var checkButton = document.getElementById('token');
-    checkButton.addEventListener('click', login_button, false);
+    var login_button_ = document.getElementById('login-button');
+    login_button_.addEventListener('click', login_button, false);
   }, false);
 }
 
-function main() {
-  StartListener();
-}
-
-main();
+Main();

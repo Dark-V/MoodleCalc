@@ -1,0 +1,71 @@
+/* Новые стили для popup окна */
+.block {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    width: 250px;
+    position: relative;
+    margin-bottom: 7px;
+}
+
+.button-solid {
+    position: absolute;
+    top: 0;
+    right: 0;
+    Padding: 5px
+}
+
+.button-solid img {
+	width: 23px;
+	height: 23px;
+}
+
+.login-container {
+    margin-top: 25px;
+}
+
+.login-button {
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0;
+    position: relative;
+}
+
+.denied-button {
+    background-color: #FF0000;
+}
+
+.button:hover {
+	background-color: #3E8E41;
+}
+
+h1 {
+	font-size: 24px;
+	font-weight: bold;
+	margin: 0;
+	margin-bottom: 10px;
+}
+
+label {
+	display: block;
+	font-size: 16px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"] {
+	border: 1px solid #CCCCCC;
+	border-radius: 5px;
+	font-size: 14px;
+	padding: 10px;
+	width: 200px;
+}

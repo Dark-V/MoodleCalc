@@ -1,30 +1,28 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>MoodleCalc - Title page</title>
-    <link rel="stylesheet" href="../css/all.css">
-    <script src="../js/internal/popup.js"></script>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
-  <body>
-    <div class="login-container">
-      <h2 id="title_name">MoodleCalc</h2>
-        <button href="#" class="button-solid" id="setting_btn">
-          <img src="../img/settings_icon.png" height="15">
-        </button>
-      <div class="login-container">   
-        <label>Username : </label>   
-        <input type="text" placeholder="Enter Username" id="username" class="login_input">  <br>
-        <label>Password : </label>   
-        <input type="password" placeholder="Enter Password" id="password" class="login_input">  
-      </div>
-	   <div class="login-img-container">
-			<button id="token">Войти</button>
-			<img src="../img/loading.gif" height="20" id="loading-img" style="display:none">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>MoodleCalc Extension</title>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../css/popup.css">
+		<script src="../js/internal/popup.js"> </script>
+	</head>
+<body>
+	<div class="block">
+		<h1>MoodleCalc</h1>
+		<label for="username">Username:</label>
+		<input type="text" id="username" name="username" placeholder="Enter your username">
+		<label for="password">Password:</label>
+		<input type="password" id="password" name="password" placeholder="Enter your password">
+		
+		<div button href="#" class="button-solid" id="setting_btn">
+			<img src="../img/settings_icon.png" width="25" height="25">
 		</div>
-      <p id="func_return"></p>
-    </div>
-  </body>
-</html>
+
+		<div class="login-container">
+			<button class="login-button" id="login-button">Login</button>
+			<p id="login-data"></p>
+		</div>
+		
+	</div>
+</body></html>

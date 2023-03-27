@@ -10,11 +10,11 @@ function DownloadFileByString(filename, content) {
 }
 
 function ParseQuestion(item) {
-    if (item.status !== "Ответ сохранен" && item.status !== "Выполнен") {
+    if (item.status !== "Ответ сохранен" && item.status !== "Выполнен" && item.status !== "Неверно" && item.status !== "Верно") {
       return null;
     }
   
-    const parser = new DOMParser();
+    const parser = new DOMParser(); 
     const html = parser.parseFromString(item.html, "text/html");
   
     const qid = html.querySelector(".questionflagpostdata").value.split("qid=")[1].split("&slot")[0];
@@ -22,8 +22,9 @@ function ParseQuestion(item) {
   
     let answers;
     if (item.type === "multichoice" || item.type === "truefalse") {
-      const rawAnswers = html.querySelectorAll('[checked="checked"]');
-      answers = Array.from(rawAnswers, (rawAnswer) => rawAnswer.parentNode.textContent);
+      console.log(html);
+      const rawAnswers = html.querySelectorAll('input[type="radio"][checked="checked"]');
+      answers = Array.from(rawAnswers, (rawAnswer) => rawAnswer.parentNode.querySelector('.flex-fill.ml-1').textContent.trim());
     } else if (item.type === "multianswer") {
       answers = [html.querySelector(".form-control.mb-1").value];
     } else if (item.type === "match") {
@@ -36,18 +37,23 @@ function ParseQuestion(item) {
     } else if (item.type === "ordering") {
       const rawAnswers = html.querySelectorAll(".sortableitem");
       answers = Array.from(rawAnswers, (rawAnswer) => rawAnswer.textContent);
-    } else {
+    } else if (item.type === "shortanswer") {
+      const rawAnswers = html.querySelectorAll('input[type="text"]');;
+      answers = Array.from(rawAnswers, (rawAnswer) => rawAnswer.value);
+    }
+     else {
       console.log(`Error, the "${item.type}" type is not supported!`);
       return null;
     }
 
-    item.mark = parseFloat(item.mark.replace(",", "."));
+    
+    item.mark = item.mark && typeof item.mark === "string" ? parseFloat(item.mark.replace(",", ".")) : -1;
     return {
         qid,
         qtype: item.type,
         qtext,
         mark: item.mark,
-        isCorrect: item.mark > parseFloat(document.getElementById('range-value').value),
+        isCorrect: (item.mark > parseFloat(document.getElementById('range-value').value)) || (item.status == "Верно"),
         answers
     }
   }
@@ -77,9 +83,9 @@ async function GenerateQuizShare(attemptid, wstoken) {
     // review -> mod_quiz_get_attempt_review
     var wsfunction = "mod_quiz_get_attempt_review";
     var url = `https://lk.sakhgu.ru/webservice/rest/server.php?wstoken=${wstoken}&moodlewsrestformat=json&wsfunction=${wsfunction}&attemptid=${attemptid}`;
-    console.log(url);
     var body = await(await fetch(url)).json();
 
+    console.log(url); 
     // Create json template
     // set "timestamp" -> Math.floor(Date.now() / 1000)
     // set "username"  -> document.getElementsByClassName('usertext')[0].textContent

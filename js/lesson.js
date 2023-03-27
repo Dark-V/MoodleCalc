@@ -50,18 +50,6 @@ function MakeButton(innerHTML_, id_, func_) {
     header.appendChild(button);
 }
 
-// AVOID, need mathl.js support, don't need anymore
-// async function MathMLs2Latex() {
-//     var MathMLs = document.getElementsByClassName('Wirisformula');
-//     for (var i=0, max=MathMLs.length; i < max; i++) {
-//         var MathML = MathMLs[i].getAttribute('data-mathml');
-
-//         MathML = MathML.replaceAll('«','<').replaceAll('»','>').replaceAll('¨','"') <- looks like i can just use only mathml for word
-//         var latex = MathML2LaTeX.convert(MathML);
-//         MathMLs[i].setAttribute('alt', latex);
-//     }
-// }
-
 async function div2Image() {
     document.getElementById('canvasconverting').innerText = "...";
     var tagName = document.getElementsByClassName("box py-3 contents")[0];

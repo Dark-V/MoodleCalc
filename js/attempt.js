@@ -112,6 +112,16 @@ async function SendQuestion(localItem, serverItem) {
 
   if (serverItem.type === "multichoice") {
     if (localItem.isCorrect) {
+        html.querySelectorAll('.answer input[type="radio"]').forEach((input, index) => {
+
+          let label = html.querySelectorAll('.answer .flex-fill.ml-1')[index].textContent;
+          if (localItem.answers[0] == label) 
+            data.push({name: input.name, value: input.value});
+      });
+    }
+  }
+  else if (serverItem.type === "debug") {
+    if (localItem.isCorrect) {
       html.querySelectorAll('.answer input[type="radio"]').forEach((input, index) => {
         let label = html.querySelectorAll('.answer .flex-fill.ml-1')[index].textContent;
   
@@ -119,7 +129,7 @@ async function SendQuestion(localItem, serverItem) {
       });
     }
   } else {
-    console.log(`Error, the "${localItem.type}" local type is not supported!`);
+    console.log(`Error, the "${localItem.type}" local type is not supported yet!`);
     return null;
   }
 

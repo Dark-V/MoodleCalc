@@ -8,7 +8,7 @@ async function login() {
     console.log(data);
   
     if (data.error)  { 
-      document.getElementById('login-data').textContent = data.error;
+      console.log(data.error);
   
       return false
     }
@@ -16,11 +16,6 @@ async function login() {
     chrome.storage.sync.set({"wstoken" : data.token}, function() {
       console.log(`Value is set to ${data.token}`);
     });
-  
-    Hide();
-  
-    // clear login data result
-    document.getElementById('login-data').textContent = "";
   
     return true
 }

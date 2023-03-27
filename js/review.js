@@ -22,7 +22,6 @@ function ParseQuestion(item) {
   
     let answers;
     if (item.type === "multichoice" || item.type === "truefalse") {
-      console.log(html);
       const rawAnswers = html.querySelectorAll('input[type="radio"][checked="checked"]');
       answers = Array.from(rawAnswers, (rawAnswer) => rawAnswer.parentNode.querySelector('.flex-fill.ml-1').textContent.trim());
     } else if (item.type === "multianswer") {
@@ -42,7 +41,7 @@ function ParseQuestion(item) {
       answers = Array.from(rawAnswers, (rawAnswer) => rawAnswer.value);
     }
      else {
-      console.log(`Error, the "${item.type}" type is not supported!`);
+      console.log(`Error, the "${item.type}" type is not supported yet!`);
       return null;
     }
 

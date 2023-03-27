@@ -21,6 +21,10 @@
         "matches": ["https://lk.sakhgu.ru/*"]
     },
     {
+        "js": ["js/logging.js"],
+        "matches": ["https://lk.sakhgu.ru/login/index.php"]
+    },
+    {
         "js": ["js/review.js"],
         "matches": ["https://lk.sakhgu.ru/mod/quiz/review.php*"]
     },

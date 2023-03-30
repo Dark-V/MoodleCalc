@@ -1,0 +1,41 @@
+{
+    "manifest_version": 3,
+    "name": "ModuleCalc",
+    "description": "Made by 'schemchiki' community",
+    "version": "2.0",
+    "icons": {
+        "16": "img/icon/icon16.png",
+        "48": "img/icon/icon48.png",
+		"64": "img/icon/icon64.png"
+    },
+    "background": {
+        "service_worker": "js/external/htmlcanvas/html2canvas.min.js"
+    },
+    "action": {
+        "default_icon": "img/icon/icon64.png",
+        "default_popup": "html/popup.html"
+    },
+    "content_scripts": [
+    {
+        "js": ["js/content.js","js/external/htmlcanvas/html2canvas.min.js"],
+        "matches": ["https://lk.sakhgu.ru/*"]
+    },
+    {
+        "js": ["js/logging.js"],
+        "matches": ["https://lk.sakhgu.ru/login/index.php"]
+    },
+    {
+        "js": ["js/review.js"],
+        "matches": ["https://lk.sakhgu.ru/mod/quiz/review.php*"]
+    },
+    {
+        "js": ["js/attempt.js"],
+        "matches": ["https://lk.sakhgu.ru/mod/quiz/attempt.php*"]
+    },
+    {
+        "js": ["js/lesson.js"],
+        "matches": ["https://lk.sakhgu.ru/mod/lesson/*"]
+    }],
+    "permissions": ["activeTab","downloads", "storage", "tabs"]
+}
+	

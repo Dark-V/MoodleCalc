@@ -1,0 +1,46 @@
+ /* all styles */
+.container{
+    min-height: 100px;
+    max-height: 300px;
+    width: 200px;
+}
+#setting_btn{
+    float: right;
+    margin-top: 5px;
+}
+h2{
+    color: orange;
+    display: inline-block;
+    margin: 0 0 5px 0;
+}
+img { 
+  display:inline-block; 
+  vertical-align:middle; 
+}
+
+ /* Popup styles */
+.login_input{
+  margin: 0 0 10px 0;
+}
+
+.button-solid {
+  border: none;
+  background: none;
+}
+button-solid:focus {
+  border: none;
+  outline: none;
+}
+
+ /* Settings styles */
+.setting_option{
+  display: block;
+}
+#settings_adv{
+  margin-top: 10px;
+}
+
+/*  Advanced Settins styles */
+.setting_adv_option{
+  margin-top: 5px;
+}

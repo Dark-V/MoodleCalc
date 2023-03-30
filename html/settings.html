@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../css/all.css">
+    <script src="../js/internal/settings.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodleSettings</title>
+</head>
+<body>
+   <div class="container">
+    <h2>Settings</h2>
+        <!-- Settings -->
+        <div class="setting_menu">
+            <div class="setting_option">
+                <input type="checkbox" disabled>
+                <label>Debug Function</label>
+            </div>
+        </div>
+
+        <!-- Advanced Settings -->
+        <div id="settings_adv">
+            <h2>Advanced Settings</h2>
+            <!-- Autodelete token -->
+            <div class="setting_adv_option" id="autodelete_token" style="display: inline-grid;"> 
+                <label id="token" style="vertical-align: middle;">Your "Moodle" token is: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</label>
+                <button id="show_token_button" class="hidden">Show token</button>
+                <button id="copy_token_button">Copy token</button>
+            </div>
+            <!-- Test func -->
+            <div class="setting_adv_option" id="test_func">
+                <input type="checkbox" disabled>
+                <label>Advanced Debug Function</label>
+            </div>
+        </div>
+    </div>
+   </div>
+</body>
+</html>

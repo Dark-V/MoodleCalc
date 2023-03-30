@@ -59,8 +59,14 @@ async function login_button() {
 }
 
 function Main() {
+  // when page is loaded
   document.addEventListener('DOMContentLoaded', () => {
 
+    // TODO: add here time-token life
+
+    // check if user has token
+    // if yes -> disable input, display exit button
+    // if not -> start auth process
     chrome.storage.sync.get(["wstoken"], async function(r) {
       if (r["wstoken"] != "") Hide()
       else Show();

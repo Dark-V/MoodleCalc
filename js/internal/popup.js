@@ -47,6 +47,7 @@ async function Show() {
 
 async function unlogin() {
   console.log('Unlogging');
+  
   Show();
   chrome.storage.sync.set({"wstoken" : ""}, function() {});
 }

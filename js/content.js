@@ -15,20 +15,18 @@ function replaceAllChild(old, new_) {
 }
 
 function moveAllHref() {
-    // TODO: FIX
-    // instance = GetByClass("activityinstance")
-    // if (instance.GeyByClass(" dimmed dimmed_text") is null) -> do code
-    // else -> skip node
-
-    var instance = document.getElementsByClassName("activityinstance")
+    var instance = document.getElementsByClassName("activity-item ")
 
     for (var i=0, max=instance.length; i < max; i++) {
-        if (instance[i].getElementsByClassName(' dimmed dimmed_text')[0] == null) {
+        if (instance[i].getElementsByClassName(' dimmed dimmed_text')[0] != null) continue;
+        if (instance[i].className == "activity-item activityinline") continue;
 
-            var href = instance[i].getElementsByClassName("aalink")[0].href;
-            instance[i].getElementsByClassName("aalink")[0].removeAttribute("href")
-            document.getElementsByClassName("instancename")[i].href = href;
-        }
+        var href = instance[i].getElementsByClassName(" aalink stretched-link")[0].href
+        var aalink = instance[i].getElementsByClassName(" aalink stretched-link")[0];
+        aalink.removeAttribute("href")
+        aalink.className = "";
+
+        instance[i].getElementsByClassName("instancename")[0].href = href;
     }
 }
 
@@ -118,17 +116,17 @@ async function loadSpoilerItems(this_, ModuleId) {
 // Need review
 function SecretFunction() {
     
-    ModuleId = nthParent(this, 6).id
+    ModuleId = nthParent(this, 7).getAttribute('data-id')
     if (this.parentNode.parentNode.parentNode.className === `spoiler-head-${ModuleId}`) {
-       document.getElementById(`spoiler-${ModuleId}`).remove(); 
-       this.parentNode.parentNode.parentNode.id = ""
+       document.querySelector(`[spoiler="spoiler-${ModuleId}"]`).remove(); 
+       this.parentNode.parentNode.parentNode.className = "";
     }
     else {
 
         var newNode = document.createElement('div');
         newNode.style = "margin-left: 10%";
 
-        newNode.id = `spoiler-${ModuleId}`;
+        newNode.setAttribute('spoiler', `spoiler-${ModuleId}`);
         newNode.innerHTML = `
         <table style="border-collapse: collapse; width: 400px;height: 36px; word-break: keep-all;" border="0">
         <tbody>
@@ -159,7 +157,7 @@ function SecretFunction() {
 }
 
 function AddSecretButton() {
-    var icons = document.getElementsByClassName('iconlarge activityicon')
+    var icons = document.getElementsByClassName('activityicon ')
 
     for (var i=0, max=icons.length; i < max; i++) {
         icons[i].onclick = SecretFunction

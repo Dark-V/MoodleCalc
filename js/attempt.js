@@ -5,7 +5,7 @@ function HideOrShow() {
 
 function SecretNavBlock() {
       // Create new navblock
-      var targetEl = document.querySelector('.columnright.blockcolumn.has-blocks > :first-child');
+      var targetEl = document.querySelector('.columnleft.blockcolumn.has-blocks > :first-child');
 
       // Create the aside element with all properties at once
       var asideEl = document.createElement('aside');

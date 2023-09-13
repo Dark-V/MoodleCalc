@@ -38,7 +38,7 @@ async function MakeOnePage() {
 
 function MakeButton(innerHTML_, id_, func_) {
 
-    var header = document.getElementsByClassName('headermain')[0]
+    var header = document.getElementsByClassName('activity-header')[0]
     header.style = "display: inline;";
         
     var button = document.createElement("button");

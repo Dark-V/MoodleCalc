@@ -133,7 +133,7 @@ async function SendQuestion(localItem, serverItem) {
     return null;
   }
 
-  if (data === []) return null;
+  if (data == []) return null;
 
   chrome.storage.sync.get(["wstoken"], async function(result) {
     const url = new URL(window.location.href);
@@ -158,6 +158,36 @@ async function SendQuestion(localItem, serverItem) {
 
 }
 
+function CopyQuestionTextToClipBoard(element) {
+  // Получаем текст вопроса
+  let questionText = element.querySelector('.qtext').innerText;
+
+  // Получаем все ответы
+  let answers = Array.from(element.querySelectorAll('.answer .text p')).map(p => p.innerText);
+
+  // Получаем все варианты ответов, игнорируя первый элемент
+  let answerOptions = Array.from(element.querySelector('.answer .control select').options).slice(1).map(option => option.innerText);
+
+  // Формируем результат
+  let result = questionText + '\n' + answers.join('\n') + '\nВарианты ответа:\n' + answerOptions.join('\n') + '\n';
+
+  let prePromt = "Это вопрос на составление соотвествий. Тебе нужно соеденить их правильно друг с другом. Используй только текущие формулировки текста, тебя нельзя модифицировать их. Твой ответ должен быть в формате сниппета. \n";
+
+  // Возвращаем результат
+  navigator.clipboard.writeText(prePromt + result);
+}
+
+function CopyQustionTextBtn() {
+  let elementsMatch = document.querySelectorAll('.que.match .no');
+
+  elementsMatch.forEach(element => {
+      element.addEventListener('click', function() {
+          CopyQuestionTextToClipBoard(element.parentNode.parentNode);
+      });
+  });
+}
+
+
 async function main() {
     const url = new URL(window.location.href);
     const attemptid = url.searchParams.get('attempt');
@@ -170,6 +200,9 @@ async function main() {
     
     // "Загрузить?" btn
     CreateLoadButton();
+
+    // Set a new 
+    CopyQustionTextBtn();
 
 }
 

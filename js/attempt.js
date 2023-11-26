@@ -158,7 +158,7 @@ async function SendQuestion(localItem, serverItem) {
 
 }
 
-function CopyQuestionTextToClipBoard(element) {
+function CopyQuestionTextToClipBoard(element, event) {
   // Получаем текст вопроса
   let questionText = element.querySelector('.qtext').innerText;
 
@@ -171,22 +171,27 @@ function CopyQuestionTextToClipBoard(element) {
   // Формируем результат
   let result = questionText + '\n' + answers.join('\n') + '\nВарианты ответа:\n' + answerOptions.join('\n') + '\n';
 
-  let prePromt = "Это вопрос на составление соотвествий. Тебе нужно соеденить их правильно друг с другом. Используй только текущие формулировки текста, тебя нельзя модифицировать их. Твой ответ должен быть в формате сниппета. \n";
+  let prePromt = "Это вопрос на составление соотвествий. Нужно соеденить их правильно между собой. Используй только текущие формулировки текста, нельзя модифицировать их. Твой ответ должен быть в формате сниппета. \n";
 
-  // Возвращаем результат
-  navigator.clipboard.writeText(prePromt + result);
+  // If Ctrl is pressed, open a new tab with the link
+  if (event.ctrlKey) {
+    window.open(`https://www.bing.com/search?iscopilotedu=1&q=${encodeURIComponent(prePromt + result)}&showconv=1&FORM=hpcodx`, '_blank');
+  } else {
+    // Возвращаем результат
+    navigator.clipboard.writeText(prePromt + result);
+  }
 }
 
 function CopyQustionTextBtn() {
   let elementsMatch = document.querySelectorAll('.que.match .no');
 
   elementsMatch.forEach(element => {
-      element.addEventListener('click', function() {
-          CopyQuestionTextToClipBoard(element.parentNode.parentNode);
-      });
+    element.addEventListener('click', function(event) {
+      CopyQuestionTextToClipBoard(element.parentNode.parentNode, event);
+    });
   });
 }
-
+  
 
 async function main() {
     const url = new URL(window.location.href);

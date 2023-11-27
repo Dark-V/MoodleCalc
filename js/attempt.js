@@ -158,39 +158,49 @@ async function SendQuestion(localItem, serverItem) {
 
 }
 
-function CopyQuestionTextToClipBoard(element, event) {
-  // Получаем текст вопроса
+function CopyQuestionTextToClipBoard(element, event, qtype) {
   let questionText = element.querySelector('.qtext').innerText;
-
-  // Получаем все ответы
   let answers = Array.from(element.querySelectorAll('.answer .text p')).map(p => p.innerText);
+  let answerOptions = [];
+  let prePromt = "";
 
-  // Получаем все варианты ответов, игнорируя первый элемент
-  let answerOptions = Array.from(element.querySelector('.answer .control select').options).slice(1).map(option => option.innerText);
+  if (qtype === "match") {
+    answerOptions = Array.from(element.querySelector('.answer .control select').options).slice(1).map(option => option.innerText);
+    prePromt = "Это вопрос на составление соотвествий. Нужно соеденить их правильно между собой. Используй только текущие формулировки текста, нельзя модифицировать их. Твой ответ должен быть в формате сниппета. \n";
+  } else if (qtype === "shortanswer") {
+    prePromt = "Это вопрос на ввод слова. Тебе требуется указать ТОЛЬКО правильный ответ, который нужно ввести. Не цитируй полностью исходный текст. \n";
+  } else if (qtype === "multichoice") {
+    answerOptions = Array.from(element.querySelectorAll('.answer .r0, .answer .r1')).map(option => option.innerText);
+    prePromt = "Это вопроc с выбором только 1 правильного ответа. Тебе нужно выбрать правильный ответ и указать только его. Не цитируй полностью исходный текст."
+  }
 
-  // Формируем результат
-  let result = questionText + '\n' + answers.join('\n') + '\nВарианты ответа:\n' + answerOptions.join('\n') + '\n';
+  let result = questionText + '\n' + answers.join('\n');
 
-  let prePromt = "Это вопрос на составление соотвествий. Нужно соеденить их правильно между собой. Используй только текущие формулировки текста, нельзя модифицировать их. Твой ответ должен быть в формате сниппета. \n";
+  if (answerOptions.length !== 0) {
+      result += '\nВарианты ответа:\n' + answerOptions.join('\n') + '\n';
+  }
 
-  // If Ctrl is pressed, open a new tab with the link
   if (event.ctrlKey) {
     window.open(`https://www.bing.com/search?iscopilotedu=1&q=${encodeURIComponent(prePromt + result)}&showconv=1&FORM=hpcodx`, '_blank');
   } else {
-    // Возвращаем результат
     navigator.clipboard.writeText(prePromt + result);
   }
 }
 
 function CopyQustionTextBtn() {
-  let elementsMatch = document.querySelectorAll('.que.match .no');
+  let qtypes = ['match', 'shortanswer', 'multichoice'];
 
-  elementsMatch.forEach(element => {
-    element.addEventListener('click', function(event) {
-      CopyQuestionTextToClipBoard(element.parentNode.parentNode, event);
+  for (let qtype of qtypes) {
+    let elementsMatch = document.querySelectorAll(`.que.${qtype} .no`);
+
+    elementsMatch.forEach(element => {
+      element.addEventListener('click', function(event) {
+        CopyQuestionTextToClipBoard(element.parentNode.parentNode, event, qtype);
+      });
     });
-  });
+  }
 }
+
   
 
 async function main() {
